@@ -1,0 +1,8 @@
+services:
+  database:
+    container_name: sugary_container
+    image: postgres:16.4-alpine3.20
+    ports:
+      - 5432:5432
+    env_file:
+      - ../../.env.development
