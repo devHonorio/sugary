@@ -8,7 +8,9 @@
     "start": "next start",
     "services:up": "docker compose -f src/infra/compose.yaml up -d",
     "services:stop": "docker compose -f src/infra/compose.yaml stop",
-    "services:down": "docker compose -f src/infra/compose.yaml down"
+    "services:down": "docker compose -f src/infra/compose.yaml down",
+    "test": "jest",
+    "test:watch": "jest --watchAll"
   },
   "keywords": [],
   "author": "",
@@ -20,8 +22,11 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.13",
     "@types/node": "22.7.6",
     "@types/react": "18.3.11",
+    "jest": "^29.7.0",
+    "ts-node": "^10.9.2",
     "typescript": "5.6.3"
   }
 }
