@@ -1,5 +1,5 @@
 import { expect, test, beforeAll } from '@jest/globals';
-import { orchestrator } from '../../orchestrator/orchestrator';
+import orchestrator from '../../orchestrator/orchestrator';
 
 beforeAll(async () => {
   orchestrator.waitForAllServices();
