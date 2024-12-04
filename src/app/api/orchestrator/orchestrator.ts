@@ -1,4 +1,9 @@
+import dotenv from 'dotenv';
+import dotenvExpand from 'dotenv-expand';
+dotenvExpand.expand(dotenv.config({ path: '.env.development' }));
+
 import retry from 'async-retry';
+import { client } from 'src/infra/prisma';
 
 const waitForAllServices = () => {
   retry(
@@ -16,5 +21,9 @@ const waitForAllServices = () => {
   );
 };
 
-const orchestrator = { waitForAllServices };
+const cleanDatabase = async () => {
+  await client.client.deleteMany();
+};
+
+const orchestrator = { waitForAllServices, cleanDatabase };
 export default orchestrator;
