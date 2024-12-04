@@ -25,5 +25,15 @@ const cleanDatabase = async () => {
   await client.client.deleteMany();
 };
 
-const orchestrator = { waitForAllServices, cleanDatabase };
+const seedClient = async () => {
+  await client.client.create({
+    data: {
+      id: '1',
+      name: 'John Doe',
+      phone: '0123456789',
+    },
+  });
+};
+const seedDatabase = { seedClient };
+const orchestrator = { waitForAllServices, cleanDatabase, seedDatabase };
 export default orchestrator;
