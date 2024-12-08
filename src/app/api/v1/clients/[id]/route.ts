@@ -16,3 +16,18 @@ export const DELETE = async (_req, { params }: Params) => {
     return new Response(null, { status: 404 });
   }
 };
+
+export const GET = async (_req, { params }: Params) => {
+  try {
+    const response = await client.client.findUnique({
+      where: { id: params.id },
+    });
+
+    if (!response) {
+      return new Response(null, { status: 404 });
+    }
+    return Response.json(response);
+  } catch {
+    return new Response(null, { status: 500 });
+  }
+};
