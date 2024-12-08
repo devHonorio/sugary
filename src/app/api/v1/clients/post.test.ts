@@ -1,9 +1,9 @@
 import { beforeAll, test } from '@jest/globals';
 import orchestrator from '../../orchestrator/orchestrator';
 
-beforeAll(() => {
+beforeAll(async () => {
   orchestrator.waitForAllServices();
-  orchestrator.cleanDatabase();
+  await orchestrator.cleanDatabase();
 });
 
 const user: {
