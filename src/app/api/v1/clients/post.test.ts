@@ -31,6 +31,17 @@ describe('POST /api/v1/clients', () => {
           expect(error).toBeDefined();
         }
       });
+      test('User already exists', async () => {
+        const response = await fetch('http://localhost:3000/api/v1/clients', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(user),
+        });
+
+        expect(response.status).toBe(400);
+      });
     });
 
     describe('Creating user with invalid data', () => {

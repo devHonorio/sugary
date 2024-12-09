@@ -40,6 +40,13 @@ export const POST = async (req: Request) => {
         status: 400,
       });
     }
-    throw error;
+
+    if (error instanceof Error) {
+      if (error.message.search('Unique constraint failed') !== -1) {
+        return new Response(null, { status: 400 });
+      }
+    }
+
+    return new Response(null, { status: 500 });
   }
 };
