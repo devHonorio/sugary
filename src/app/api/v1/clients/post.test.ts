@@ -13,7 +13,7 @@ const user: {
 
 describe('POST /api/v1/clients', () => {
   describe('Anonymous user', () => {
-    describe('Creating user with valid data', () => {
+    describe('Creating client with valid data', () => {
       test('valid data', async () => {
         const response = await fetch('http://localhost:3000/api/v1/clients', {
           method: 'POST',
@@ -31,7 +31,7 @@ describe('POST /api/v1/clients', () => {
           expect(error).toBeDefined();
         }
       });
-      test('User already exists', async () => {
+      test('Client already exists', async () => {
         const response = await fetch('http://localhost:3000/api/v1/clients', {
           method: 'POST',
           headers: {
@@ -44,7 +44,7 @@ describe('POST /api/v1/clients', () => {
       });
     });
 
-    describe('Creating user with invalid data', () => {
+    describe('Creating client with invalid data', () => {
       test('invalid phone', async () => {
         const response = await fetch('http://localhost:3000/api/v1/clients', {
           method: 'POST',

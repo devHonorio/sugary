@@ -8,7 +8,7 @@ beforeAll(async () => {
 
 describe('GET /api/v1/clients/:id', () => {
   describe('Anonymous user', () => {
-    test('Searching user by id', async () => {
+    test('Searching client by id', async () => {
       const response = await fetch('http://localhost:3000/api/v1/clients/1');
 
       expect(response.status).toBe(200);
@@ -22,7 +22,7 @@ describe('GET /api/v1/clients/:id', () => {
       });
     });
 
-    test('Searching user not found', async () => {
+    test('Searching client not found', async () => {
       const response = await fetch('http://localhost:3000/api/v1/clients/2');
 
       expect(response.status).toBe(404);

@@ -8,7 +8,7 @@ beforeAll(async () => {
 
 describe('DELETE /api/v1/clients/:id', () => {
   describe('Anonymous user', () => {
-    test('delete user', async () => {
+    test('delete client', async () => {
       const response = await fetch('http://localhost:3000/api/v1/clients/1', {
         method: 'DELETE',
       });
@@ -16,7 +16,7 @@ describe('DELETE /api/v1/clients/:id', () => {
       expect(response.status).toBe(204);
     });
 
-    test('user not found', async () => {
+    test('client not found', async () => {
       const response = await fetch('http://localhost:3000/api/v1/clients/2', {
         method: 'DELETE',
       });
