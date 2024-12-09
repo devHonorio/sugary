@@ -8,7 +8,6 @@ import { client } from 'src/infra/prisma';
 const waitForAllServices = () => {
   retry(
     async () => {
-      process.stdout.write('.');
       const response = await fetch('http://localhost:3000/api/v1/status');
 
       await response.json();
