@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
 dotenvExpand.expand(dotenv.config({ path: '.env.development' }));
 
+import { fakerPT_BR as faker } from '@faker-js/faker';
+
 import retry from 'async-retry';
 import { client } from 'src/infra/prisma';
 
@@ -33,6 +35,22 @@ const seedClient = async () => {
     },
   });
 };
-const seedDatabase = { seedClient };
+
+const seedClients = async (quantity = 10) => {
+  await client.client.createMany({
+    data: Array.from({ length: quantity }).map(() => {
+      const name = faker.person.fullName();
+      const phone = faker.phone
+        .number({ style: 'national' })
+        .replaceAll(/[^\d]+/g, '');
+
+      return {
+        name,
+        phone,
+      };
+    }),
+  });
+};
+const seedDatabase = { seedClient, seedClients };
 const orchestrator = { waitForAllServices, cleanDatabase, seedDatabase };
 export default orchestrator;
