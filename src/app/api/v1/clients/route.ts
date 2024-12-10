@@ -1,3 +1,4 @@
+import { NextRequest } from 'next/server';
 import { client } from 'src/infra/prisma';
 import { z } from 'zod';
 
@@ -49,4 +50,28 @@ export const POST = async (req: Request) => {
 
     return new Response(null, { status: 500 });
   }
+};
+
+export const GET = async (req: NextRequest) => {
+  const searchParams = req.nextUrl.searchParams;
+
+  const page = +searchParams.get('page') || 1;
+  const peerPage = +searchParams.get('peer_page') || 10;
+
+  if (peerPage > 100) {
+    return new Response(
+      JSON.stringify({
+        errors: [{ message: 'O limite máximo de clientes é 100' }],
+      }),
+      {
+        status: 400,
+      },
+    );
+  }
+
+  const clients = await client.client.findMany({
+    skip: (page - 1) * peerPage,
+    take: peerPage,
+  });
+  return Response.json(clients);
 };
