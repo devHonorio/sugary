@@ -33,11 +33,9 @@ export const POST = async (req: Request) => {
     return new Response(null, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      const errorMessages = error.errors.map((error) => ({
-        message: error.message,
-      }));
+      const message = error.errors[0].message;
 
-      return new Response(JSON.stringify({ errors: errorMessages }), {
+      return new Response(JSON.stringify({ error: { message } }), {
         status: 400,
       });
     }
@@ -61,7 +59,7 @@ export const GET = async (req: NextRequest) => {
   if (peerPage > 100) {
     return new Response(
       JSON.stringify({
-        errors: [{ message: 'O limite máximo de clientes é 100' }],
+        error: { message: 'O limite máximo de clientes é 100' },
       }),
       {
         status: 400,

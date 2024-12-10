@@ -57,7 +57,7 @@ describe('PATCH /api/v1/clients/:id', () => {
       const body = await response.json();
 
       expect(body).toEqual({
-        errors: [{ message: 'requisição deve conter um body' }],
+        error: { message: 'requisição deve conter um body' },
       });
     });
   });

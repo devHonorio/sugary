@@ -50,7 +50,7 @@ describe('GET /api/v1/clients', () => {
       const body = await response.json();
 
       expect(body).toEqual({
-        errors: [{ message: 'O limite máximo de clientes é 100' }],
+        error: { message: 'O limite máximo de clientes é 100' },
       });
     });
 

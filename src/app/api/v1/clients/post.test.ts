@@ -59,7 +59,7 @@ describe('POST /api/v1/clients', () => {
         const body = await response.json();
 
         expect(body).toEqual({
-          errors: [{ message: 'O telefone deve ter pelo menos 10 dígitos' }],
+          error: { message: 'O telefone deve ter pelo menos 10 dígitos' },
         });
       });
 
@@ -77,10 +77,7 @@ describe('POST /api/v1/clients', () => {
         const body = await response.json();
 
         expect(body).toEqual({
-          errors: [
-            { message: 'name é obrigatório' },
-            { message: 'phone é obrigatório' },
-          ],
+          error: { message: 'name é obrigatório' },
         });
       });
     });

@@ -50,7 +50,8 @@ export const PATCH = async (req: Request, { params }: Params) => {
     return Response.json(null, { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return new Response(JSON.stringify({ errors: error.errors }), {
+      const message = error.errors[0].message;
+      return new Response(JSON.stringify({ error: { message } }), {
         status: 400,
       });
     }
@@ -61,7 +62,7 @@ export const PATCH = async (req: Request, { params }: Params) => {
       if (error.message.search('Unexpected end of JSON input') !== -1) {
         return new Response(
           JSON.stringify({
-            errors: [{ message: 'requisição deve conter um body' }],
+            error: { message: 'requisição deve conter um body' },
           }),
           { status: 400 },
         );
