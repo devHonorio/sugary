@@ -5,7 +5,7 @@ dotenvExpand.expand(dotenv.config({ path: '.env.development' }));
 import { fakerPT_BR as faker } from '@faker-js/faker';
 
 import retry from 'async-retry';
-import { client } from 'src/infra/prisma';
+import { prismaClient } from 'src/infra/prisma';
 
 const waitForAllServices = () => {
   retry(
@@ -23,11 +23,11 @@ const waitForAllServices = () => {
 };
 
 const cleanDatabase = async () => {
-  await client.client.deleteMany();
+  await prismaClient.client.deleteMany();
 };
 
 const seedClient = async () => {
-  await client.client.create({
+  await prismaClient.client.create({
     data: {
       id: '1',
       name: 'John Doe',
@@ -37,7 +37,7 @@ const seedClient = async () => {
 };
 
 const seedClients = async (quantity = 10) => {
-  await client.client.createMany({
+  await prismaClient.client.createMany({
     data: Array.from({ length: quantity }).map(() => {
       const name = faker.person.fullName();
       const phone = faker.phone

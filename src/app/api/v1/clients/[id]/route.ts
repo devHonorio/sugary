@@ -1,4 +1,4 @@
-import { client } from 'src/infra/prisma';
+import { prismaClient } from 'src/infra/prisma';
 import { z } from 'zod';
 
 interface Params {
@@ -7,7 +7,7 @@ interface Params {
 
 export const DELETE = async (_req, { params }: Params) => {
   try {
-    await client.client.delete({ where: { id: params.id } });
+    await prismaClient.client.delete({ where: { id: params.id } });
     return new Response(null, { status: 204 });
   } catch (error) {
     if (error instanceof Error) {
@@ -20,7 +20,7 @@ export const DELETE = async (_req, { params }: Params) => {
 
 export const GET = async (_req, { params }: Params) => {
   try {
-    const response = await client.client.findUnique({
+    const response = await prismaClient.client.findUnique({
       where: { id: params.id },
     });
 
@@ -43,7 +43,7 @@ export const PATCH = async (req: Request, { params }: Params) => {
 
     const { name, phone } = schemaClient.parse(data);
 
-    await client.client.update({
+    await prismaClient.client.update({
       where: { id: params.id },
       data: { name, phone },
     });

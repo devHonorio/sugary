@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { client } from 'src/infra/prisma';
+import { prismaClient } from 'src/infra/prisma';
 import { z } from 'zod';
 
 const schemaClient = z.object({
@@ -19,7 +19,7 @@ export const POST = async (req: Request) => {
   try {
     const { name, phone } = schemaClient.parse(user);
 
-    await client.client.create({
+    await prismaClient.client.create({
       data: {
         name,
         phone,
@@ -69,7 +69,7 @@ export const GET = async (req: NextRequest) => {
     );
   }
 
-  const clients = await client.client.findMany({
+  const clients = await prismaClient.client.findMany({
     skip: (page - 1) * peerPage,
     take: peerPage,
   });
