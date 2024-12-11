@@ -12,6 +12,14 @@ class Repository implements IClientRepository {
   async create({ name, phone }: Pick<IClient, 'name' | 'phone'>) {
     await this.dbClient.createClient(name, phone);
   }
+
+  async paginate(page: number, peerPage: number) {
+    return await this.dbClient.paginateClients(page, peerPage);
+  }
+
+  validatePeerPage(peer_page: number): boolean {
+    return peer_page > 0 && peer_page <= 100;
+  }
 }
 
 export const clientRepository = new Repository(prismaAdapter);

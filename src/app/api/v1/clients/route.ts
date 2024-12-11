@@ -1,5 +1,4 @@
 import { NextRequest } from 'next/server';
-import { prismaClient } from 'src/infra/prisma';
 import { Client } from 'src/models/client/Client';
 import { clientRepository } from 'src/models/client/Repository';
 
@@ -30,7 +29,7 @@ export const GET = async (req: NextRequest) => {
   const page = +searchParams.get('page') || 1;
   const peerPage = +searchParams.get('peer_page') || 10;
 
-  if (peerPage > 100) {
+  if (!clientRepository.validatePeerPage(peerPage)) {
     return new Response(
       JSON.stringify({
         error: { message: 'O limite máximo de clientes é 100' },
@@ -41,9 +40,6 @@ export const GET = async (req: NextRequest) => {
     );
   }
 
-  const clients = await prismaClient.client.findMany({
-    skip: (page - 1) * peerPage,
-    take: peerPage,
-  });
+  const clients = await clientRepository.paginate(page, peerPage);
   return Response.json(clients);
 };

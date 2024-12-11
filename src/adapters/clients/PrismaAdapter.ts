@@ -10,6 +10,13 @@ class PrismaAdapter implements IDbClient {
       },
     });
   }
+
+  async paginateClients(page: number, peerPage: number) {
+    return await prismaClient.client.findMany({
+      skip: (page - 1) * peerPage,
+      take: peerPage,
+    });
+  }
 }
 
 export const prismaAdapter = new PrismaAdapter();
