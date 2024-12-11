@@ -1,49 +1,23 @@
 import { NextRequest } from 'next/server';
 import { prismaClient } from 'src/infra/prisma';
-import { z } from 'zod';
-
-const schemaClient = z.object({
-  name: z
-    .string({ errorMap: () => ({ message: 'name é obrigatório' }) })
-    .min(3, 'O nome deve ter pelo menos 3 caracteres')
-    .max(255, 'O nome deve ter no máximo 255 caracteres'),
-  phone: z
-    .string({ errorMap: () => ({ message: 'phone é obrigatório' }) })
-    .min(10, 'O telefone deve ter pelo menos 10 dígitos')
-    .max(11, 'O telefone deve ter no máximo 11 dígitos'),
-});
+import { Client } from 'src/models/client/Client';
+import { clientRepository } from 'src/models/client/Repository';
 
 export const POST = async (req: Request) => {
   const user = await req.json();
 
   try {
-    const { name, phone } = schemaClient.parse(user);
+    const client = new Client(user);
 
-    await prismaClient.client.create({
-      data: {
-        name,
-        phone,
-      },
-
-      select: {
-        id: true,
-      },
-    });
+    await clientRepository.create({ name: client.name, phone: client.phone });
 
     return new Response(null, { status: 201 });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const message = error.errors[0].message;
-
-      return new Response(JSON.stringify({ error: { message } }), {
-        status: 400,
-      });
-    }
-
     if (error instanceof Error) {
-      if (error.message.search('Unique constraint failed') !== -1) {
-        return new Response(null, { status: 400 });
-      }
+      return new Response(
+        JSON.stringify({ error: { message: error.message } }),
+        { status: 400 },
+      );
     }
 
     return new Response(null, { status: 500 });
