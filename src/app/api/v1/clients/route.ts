@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
+import { clientRepository } from 'src/models/client';
 import { Client } from 'src/models/client/Client';
-import { clientRepository } from 'src/models/client/Repository';
 
 export const POST = async (req: Request) => {
   const user = await req.json();

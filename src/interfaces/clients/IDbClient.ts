@@ -6,4 +6,5 @@ export interface IDbClient {
     page: number,
     peer_page: number,
   ) => Promise<Pick<IClient, 'name' | 'phone' | 'id'>[]>;
+  deleteClient: (id: string) => Promise<void>;
 }

@@ -1,5 +1,6 @@
 import { prismaClient } from 'src/infra/prisma';
-import { z } from 'zod';
+import { clientRepository } from 'src/models/client';
+import z from 'zod';
 
 interface Params {
   params: { id: string };
@@ -7,13 +8,10 @@ interface Params {
 
 export const DELETE = async (_req, { params }: Params) => {
   try {
-    await prismaClient.client.delete({ where: { id: params.id } });
-    return new Response(null, { status: 204 });
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    }
+    await clientRepository.delete(params.id);
 
+    return new Response(null, { status: 204 });
+  } catch {
     return new Response(null, { status: 404 });
   }
 };

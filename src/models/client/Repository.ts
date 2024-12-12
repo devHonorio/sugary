@@ -1,25 +1,24 @@
-import { prismaAdapter } from 'src/adapters/clients/PrismaAdapter';
-import { IClient } from 'src/interfaces/clients/IClient';
 import { IDbClient } from 'src/interfaces/clients/IDbClient';
 import { IClientRepository } from 'src/interfaces/clients/IRepositoy';
 
-class Repository implements IClientRepository {
+export class Repository implements IClientRepository {
   private dbClient: IDbClient;
   constructor(dbClient: IDbClient) {
     this.dbClient = dbClient;
   }
 
-  async create({ name, phone }: Pick<IClient, 'name' | 'phone'>) {
+  async create({ name, phone }) {
     await this.dbClient.createClient(name, phone);
   }
 
   async paginate(page: number, peerPage: number) {
     return await this.dbClient.paginateClients(page, peerPage);
   }
+  async delete(id: string) {
+    await this.dbClient.deleteClient(id);
+  }
 
-  validatePeerPage(peer_page: number): boolean {
+  validatePeerPage(peer_page: number) {
     return peer_page > 0 && peer_page <= 100;
   }
 }
-
-export const clientRepository = new Repository(prismaAdapter);
