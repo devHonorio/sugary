@@ -21,4 +21,8 @@ export class Repository implements IClientRepository {
   validatePeerPage(peer_page: number) {
     return peer_page > 0 && peer_page <= 100;
   }
+
+  async findById(id: string) {
+    return await this.dbClient.findById(id);
+  }
 }

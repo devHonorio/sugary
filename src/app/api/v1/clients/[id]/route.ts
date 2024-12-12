@@ -18,9 +18,7 @@ export const DELETE = async (_req, { params }: Params) => {
 
 export const GET = async (_req, { params }: Params) => {
   try {
-    const response = await prismaClient.client.findUnique({
-      where: { id: params.id },
-    });
+    const response = await clientRepository.findById(params.id);
 
     if (!response) {
       return new Response(null, { status: 404 });

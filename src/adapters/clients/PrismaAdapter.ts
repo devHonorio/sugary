@@ -21,4 +21,8 @@ export class PrismaAdapter implements IDbClient {
   async deleteClient(id: string) {
     await prismaClient.client.delete({ where: { id } });
   }
+
+  async findById(id: string) {
+    return await prismaClient.client.findUnique({ where: { id } });
+  }
 }

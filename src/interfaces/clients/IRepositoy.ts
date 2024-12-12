@@ -7,5 +7,8 @@ export interface IClientRepository {
     peer_page: number,
   ) => Promise<Pick<IClient, 'name' | 'phone' | 'id'>[]>;
   delete: (id: string) => Promise<void>;
+  findById: (
+    id: string,
+  ) => Promise<Pick<IClient, 'name' | 'phone' | 'id'> | null>;
   validatePeerPage(peerPage: number): boolean;
 }

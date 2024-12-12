@@ -7,4 +7,7 @@ export interface IDbClient {
     peer_page: number,
   ) => Promise<Pick<IClient, 'name' | 'phone' | 'id'>[]>;
   deleteClient: (id: string) => Promise<void>;
+  findById: (
+    id: string,
+  ) => Promise<Pick<IClient, 'name' | 'phone' | 'id'> | null>;
 }
