@@ -1,6 +1,6 @@
-import { prismaClient } from 'src/infra/prisma';
+import { ClientNotFound } from 'src/errors/client/repository';
 import { clientRepository } from 'src/models/client';
-import z from 'zod';
+import { Client } from 'src/models/client/Client';
 
 interface Params {
   params: { id: string };
@@ -29,40 +29,34 @@ export const GET = async (_req, { params }: Params) => {
   }
 };
 
-const schemaClient = z.object({
-  name: z.string().min(3).max(255).optional(),
-  phone: z.string().min(10).max(11).optional(),
-});
 export const PATCH = async (req: Request, { params }: Params) => {
   try {
     const data = await req.json();
 
-    const { name, phone } = schemaClient.parse(data);
-
-    await prismaClient.client.update({
-      where: { id: params.id },
-      data: { name, phone },
+    const client = new Client({
+      name: data.name,
+      phone: data.phone,
+      id: params.id,
     });
+
+    await clientRepository.update({
+      name: client.name,
+      phone: client.phone,
+      id: client.id,
+    });
+
     return Response.json(null, { status: 200 });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const message = error.errors[0].message;
-      return new Response(JSON.stringify({ error: { message } }), {
-        status: 400,
-      });
-    }
-    if (error instanceof Error) {
-      if (error.message.search('not found') !== -1) {
-        return new Response(null, { status: 404 });
-      }
-      if (error.message.search('Unexpected end of JSON input') !== -1) {
-        return new Response(
-          JSON.stringify({
-            error: { message: 'requisição deve conter um body' },
-          }),
-          { status: 400 },
-        );
-      }
+    if (error instanceof ClientNotFound)
+      return new Response(null, { status: 404 });
+
+    if (error.message.search('Unexpected end of JSON input') !== -1) {
+      return new Response(
+        JSON.stringify({
+          error: { message: 'requisição deve conter um body' },
+        }),
+        { status: 400 },
+      );
     }
 
     return new Response(null, { status: 500 });

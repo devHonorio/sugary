@@ -1,16 +1,17 @@
-import { IClient } from 'src/interfaces/clients/IClient';
+import { LengthName, LengthPhone } from 'src/errors/client';
+import { ClientType } from 'src/types';
 
-export class Client implements IClient {
+export class Client {
   id: string;
   name: string;
   phone: string;
 
-  constructor({ id, name, phone }: IClient) {
+  constructor({ id, name, phone }: ClientType) {
     if (!this.validateName(name)) {
-      throw new Error(`Nome deve ter entre 3 e 255 caracteres`);
+      throw new LengthName();
     }
     if (!this.validatePhone(phone)) {
-      throw new Error(`Telefone deve ter entre 10 e 11 dígitos`);
+      throw new LengthPhone();
     }
 
     this.id = id;

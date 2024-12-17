@@ -8,25 +8,13 @@ beforeAll(async () => {
 
 describe('PATCH /api/v1/clients/:id', () => {
   describe('Anonymous user', () => {
-    test('Updating client name', async () => {
+    test('Updating client', async () => {
       const response = await fetch('http://localhost:3000/api/v1/clients/1', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name: 'John Doe' }),
-      });
-
-      expect(response.status).toBe(200);
-    });
-
-    test('Updating client phone', async () => {
-      const response = await fetch('http://localhost:3000/api/v1/clients/1', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ phone: '0123456789' }),
+        body: JSON.stringify({ phone: '0123456789', name: 'John Doe' }),
       });
 
       expect(response.status).toBe(200);
@@ -38,7 +26,7 @@ describe('PATCH /api/v1/clients/:id', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name: 'John Doe' }),
+        body: JSON.stringify({ phone: '0123456789', name: 'John Doe' }),
       });
 
       expect(response.status).toBe(404);

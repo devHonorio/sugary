@@ -1,7 +1,7 @@
 import { IDbClient } from 'src/interfaces/clients/IDbClient';
-import { IClientRepository } from 'src/interfaces/clients/IRepositoy';
+import { ClientType } from 'src/types';
 
-export class Repository implements IClientRepository {
+export class Repository {
   private dbClient: IDbClient;
   constructor(dbClient: IDbClient) {
     this.dbClient = dbClient;
@@ -24,5 +24,9 @@ export class Repository implements IClientRepository {
 
   async findById(id: string) {
     return await this.dbClient.findById(id);
+  }
+
+  async update(client: Required<ClientType>) {
+    await this.dbClient.updateClient(client);
   }
 }
