@@ -6,4 +6,15 @@ export class PrismaAdapter implements IDbAddress {
   async createAddress(address: Omit<AddressType, 'id'>) {
     await prismaClient.address.create({ data: address });
   }
+
+  async paginateAddresses(page: number, peer_page: number) {
+    const size = await prismaClient.address.count();
+    const addresses = await prismaClient.address.findMany({
+      skip: (page - 1) * peer_page,
+      take: peer_page,
+      orderBy: { street: 'asc' },
+    });
+
+    return { size, data: addresses };
+  }
 }

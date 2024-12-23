@@ -11,4 +11,8 @@ export class Repository {
   async create(address: Omit<AddressType, 'id'>) {
     await this.dbClient.createAddress(address);
   }
+
+  async paginate(page: number, peerPage: number) {
+    return await this.dbClient.paginateAddresses(page, peerPage);
+  }
 }
