@@ -1,3 +1,8 @@
+import orchestrator from '../../orchestrator/orchestrator';
+
+beforeAll(() => {
+  orchestrator.waitForAllServices();
+});
 describe('POST /api/v1/addresses', () => {
   describe('Anonymous user', () => {
     test('Creating address with invalid body', async () => {

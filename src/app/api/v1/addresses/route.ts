@@ -1,3 +1,4 @@
+import { NextRequest } from 'next/server';
 import { InvalidAddress } from 'src/errors/addresses';
 import { addressRepository } from 'src/models/address';
 import { Address } from 'src/models/address/Address';
@@ -37,4 +38,25 @@ export const POST = async (req: Request) => {
       },
     );
   }
+};
+
+export const GET = async (req: NextRequest) => {
+  const searchParams = req.nextUrl.searchParams;
+
+  const page = +searchParams.get('page') || 1;
+  const peerPage = +searchParams.get('peer_page') || 10;
+
+  if (peerPage > 100)
+    return new Response(
+      JSON.stringify({
+        error: {
+          message: 'Endereços por pagina deve ser menor ou igual a 100.',
+        },
+      }),
+      { status: 400 },
+    );
+
+  const paginated = await addressRepository.paginate(page, peerPage);
+
+  return Response.json(paginated);
 };
