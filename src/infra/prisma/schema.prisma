@@ -23,3 +23,15 @@ model Client {
 
   @@map("clients")
 }
+
+model Address {
+  id         String  @id @default(uuid())
+  surname    String?
+  street     String
+  number     Int
+  district   String
+  city       String
+  complement String?
+
+  @@map("addresses")
+}
