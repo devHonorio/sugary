@@ -1,34 +1,32 @@
 import { ClientNotFound } from 'src/errors/client/repository';
 import { prismaClient } from 'src/infra/prisma';
-import { IDbClient } from 'src/interfaces/clients/IDbClient';
+import { IDbClient } from 'src/interfaces/DbClient';
 import { ClientType } from 'src/types';
 
-export class PrismaAdapter implements IDbClient {
-  async createClient(name: string, phone: string) {
-    await prismaClient.client.create({
-      data: {
-        name,
-        phone,
-      },
-    });
+export class PrismaAdapter implements IDbClient<ClientType> {
+  async create(data: ClientType) {
+    await prismaClient.client.create({ data });
   }
-
-  async paginateClients(page: number, peerPage: number) {
-    return await prismaClient.client.findMany({
-      skip: (page - 1) * peerPage,
-      take: peerPage,
-    });
-  }
-
-  async deleteClient(id: string) {
-    await prismaClient.client.delete({ where: { id } });
-  }
-
   async findById(id: string) {
     return await prismaClient.client.findUnique({ where: { id } });
   }
 
-  async updateClient(client: Required<ClientType>) {
+  async paginate(page: number, peerPage: number) {
+    const clients = await prismaClient.client.findMany({
+      skip: (page - 1) * peerPage,
+      take: peerPage,
+    });
+
+    const size = await prismaClient.client.count();
+
+    return { size, data: clients };
+  }
+
+  async delete(id: string) {
+    await prismaClient.client.delete({ where: { id } });
+  }
+
+  async update(client: Required<ClientType>) {
     try {
       await prismaClient.client.update({
         where: { id: client.id },

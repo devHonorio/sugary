@@ -15,12 +15,14 @@ describe('GET /api/v1/clients', () => {
 
       const body = await response.json();
 
-      expect(Array.isArray(body)).toBe(true);
+      expect(Array.isArray(body.data)).toBe(true);
 
-      expect(body.length).toBe(10);
-      expect(body[0]).toHaveProperty('id');
-      expect(body[0]).toHaveProperty('name');
-      expect(body[0]).toHaveProperty('phone');
+      expect(body.data.length).toBe(10);
+      expect(body.data[0]).toHaveProperty('id');
+      expect(body.data[0]).toHaveProperty('name');
+      expect(body.data[0]).toHaveProperty('phone');
+
+      expect(body.size).toBe(10);
     });
 
     test('Retrieving with pagination', async () => {
@@ -32,12 +34,14 @@ describe('GET /api/v1/clients', () => {
 
       const body = await response.json();
 
-      expect(Array.isArray(body)).toBe(true);
+      expect(Array.isArray(body.data)).toBe(true);
 
-      expect(body.length).toBe(5);
-      expect(body[0]).toHaveProperty('id');
-      expect(body[0]).toHaveProperty('name');
-      expect(body[0]).toHaveProperty('phone');
+      expect(body.data.length).toBe(5);
+      expect(body.data[0]).toHaveProperty('id');
+      expect(body.data[0]).toHaveProperty('name');
+      expect(body.data[0]).toHaveProperty('phone');
+
+      expect(body.size).toBe(10);
     });
 
     test('Retrieving with invalid pagination', async () => {
@@ -63,7 +67,8 @@ describe('GET /api/v1/clients', () => {
 
       const body = await response.json();
 
-      expect(body.length).toBe(5);
+      expect(body.data.length).toBe(5);
+      expect(body.size).toBe(10);
     });
 
     test('Retrieving page not found', async () => {
@@ -75,7 +80,8 @@ describe('GET /api/v1/clients', () => {
 
       const body = await response.json();
 
-      expect(body.length).toBe(0);
+      expect(body.data.length).toBe(0);
+      expect(body.size).toBe(10);
     });
   });
 });
