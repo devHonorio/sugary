@@ -2,6 +2,7 @@ import { ClientNotFound } from 'src/errors/client/repository';
 import { prismaClient } from 'src/infra/prisma';
 import { IDbClient } from 'src/interfaces/DbClient';
 import { ClientType } from 'src/types';
+import { paginateRules } from 'src/utils/prisma/paginateRulles';
 
 export class PrismaAdapter implements IDbClient<ClientType> {
   async create(data: ClientType) {
@@ -13,8 +14,7 @@ export class PrismaAdapter implements IDbClient<ClientType> {
 
   async paginate(page: number, peerPage: number) {
     const clients = await prismaClient.client.findMany({
-      skip: (page - 1) * peerPage,
-      take: peerPage,
+      ...paginateRules(page, peerPage),
     });
 
     const size = await prismaClient.client.count();

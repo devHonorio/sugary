@@ -1,6 +1,7 @@
 import { prismaClient } from 'src/infra/prisma';
 import { IDbClient } from 'src/interfaces/DbClient';
 import { AddressType } from 'src/types/address';
+import { paginateRules } from 'src/utils/prisma/paginateRulles';
 
 export class PrismaAdapter implements IDbClient<AddressType> {
   async create(address: AddressType) {
@@ -10,8 +11,7 @@ export class PrismaAdapter implements IDbClient<AddressType> {
   async paginate(page: number, peer_page: number) {
     const size = await prismaClient.address.count();
     const addresses = await prismaClient.address.findMany({
-      skip: (page - 1) * peer_page,
-      take: peer_page,
+      ...paginateRules(page, peer_page),
       orderBy: { street: 'asc' },
     });
 
