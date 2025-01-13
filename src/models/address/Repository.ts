@@ -15,4 +15,8 @@ export class Repository {
   async paginate(page: number, peerPage: number) {
     return await this.dbClient.paginateAddresses(page, peerPage);
   }
+
+  async findById(id: string) {
+    return await this.dbClient.findById(id);
+  }
 }

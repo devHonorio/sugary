@@ -53,6 +53,20 @@ const seedClients = async (quantity = 10) => {
   });
 };
 
+const seedAddress = async () => {
+  await prismaClient.address.create({
+    data: {
+      id: '1',
+      surname: 'John Doe',
+      street: 'Rua 1',
+      number: 123,
+      district: 'Bairro 1',
+      city: 'Cidade 1',
+      complement: 'Complemento 1',
+    },
+  });
+};
+
 const seedAddresses = async (quantity = 10) => {
   const data = Array.from({ length: quantity }).map(() => {
     const surname = faker.person.jobDescriptor();
@@ -76,6 +90,6 @@ const seedAddresses = async (quantity = 10) => {
     data,
   });
 };
-const seedDatabase = { seedClient, seedClients, seedAddresses };
+const seedDatabase = { seedClient, seedClients, seedAddress, seedAddresses };
 const orchestrator = { waitForAllServices, cleanDatabase, seedDatabase };
 export default orchestrator;

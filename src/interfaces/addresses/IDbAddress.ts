@@ -7,4 +7,6 @@ export interface IDbAddress {
     page: number,
     peer_page: number,
   ): Promise<{ size: number; data: AddressType[] }>;
+
+  findById(id: string): Promise<AddressType | null>;
 }

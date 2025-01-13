@@ -17,4 +17,8 @@ export class PrismaAdapter implements IDbAddress {
 
     return { size, data: addresses };
   }
+
+  async findById(id: string) {
+    return await prismaClient.address.findUnique({ where: { id } });
+  }
 }
