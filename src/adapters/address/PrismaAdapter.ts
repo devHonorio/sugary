@@ -1,3 +1,4 @@
+import { AddressNotFound } from 'src/errors/addresses';
 import { prismaClient } from 'src/infra/prisma';
 import { IDbClient } from 'src/interfaces/DbClient';
 import { AddressType } from 'src/types/address';
@@ -22,6 +23,18 @@ export class PrismaAdapter implements IDbClient<AddressType> {
     return await prismaClient.address.findUnique({ where: { id } });
   }
 
-  delete: (id: string) => Promise<void>;
+  async delete(id: string) {
+    try {
+
+      await prismaClient.address.delete({where: {
+        id
+      }});
+    } catch (error) {
+      if (error.message.search('not found') !== -1) {
+        throw new AddressNotFound()
+      }
+      throw error
+    }
+  }
   update: (client: AddressType) => Promise<void | Error>;
 }
