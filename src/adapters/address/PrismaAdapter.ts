@@ -25,16 +25,46 @@ export class PrismaAdapter implements IDbClient<AddressType> {
 
   async delete(id: string) {
     try {
-
-      await prismaClient.address.delete({where: {
-        id
-      }});
+      await prismaClient.address.delete({
+        where: {
+          id,
+        },
+      });
     } catch (error) {
       if (error.message.search('not found') !== -1) {
-        throw new AddressNotFound()
+        throw new AddressNotFound();
       }
-      throw error
+      throw error;
     }
   }
-  update: (client: AddressType) => Promise<void | Error>;
+  async update({
+    city,
+    district,
+    number,
+    street,
+    complement,
+    id,
+    surname,
+  }: AddressType) {
+    try {
+      await prismaClient.address.update({
+        where: { id },
+        data: {
+          city,
+          complement,
+          district,
+          id,
+          number,
+          street,
+          surname,
+        },
+      });
+    } catch (error) {
+      if (error.message.search('not found') !== -1) {
+        throw new AddressNotFound();
+      }
+
+      throw error;
+    }
+  }
 }
