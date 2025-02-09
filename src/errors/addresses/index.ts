@@ -40,3 +40,10 @@ export class InvalidComplement extends InvalidAddress {
     super('Complement deve ter entre 3 e 255 caracteres');
   }
 }
+
+export class AddressNotFound extends Error {
+  constructor() {
+    super('Endereço nao encontrado');
+    this.name = 'AddressNotFound';
+  }
+}

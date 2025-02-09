@@ -1,14 +1,4 @@
-import { IDbAddress } from 'src/interfaces/addresses/IDbAddress';
-import { AddressType } from 'src/types/address';
+import { Repository } from '../repository';
+import { prismaAdapter } from 'src/adapters/address';
 
-export class Repository {
-  private dbClient: IDbAddress;
-
-  constructor(dbClient: IDbAddress) {
-    this.dbClient = dbClient;
-  }
-
-  async create(address: Omit<AddressType, 'id'>) {
-    await this.dbClient.createAddress(address);
-  }
-}
+export const addressRepository = new Repository(prismaAdapter);

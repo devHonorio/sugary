@@ -24,6 +24,7 @@ const waitForAllServices = () => {
 
 const cleanDatabase = async () => {
   await prismaClient.client.deleteMany();
+  await prismaClient.address.deleteMany();
 };
 
 const seedClient = async () => {
@@ -51,6 +52,44 @@ const seedClients = async (quantity = 10) => {
     }),
   });
 };
-const seedDatabase = { seedClient, seedClients };
+
+const seedAddress = async () => {
+  await prismaClient.address.create({
+    data: {
+      id: '1',
+      surname: 'John Doe',
+      street: 'Rua 1',
+      number: 123,
+      district: 'Bairro 1',
+      city: 'Cidade 1',
+      complement: 'Complemento 1',
+    },
+  });
+};
+
+const seedAddresses = async (quantity = 10) => {
+  const data = Array.from({ length: quantity }).map(() => {
+    const surname = faker.person.jobDescriptor();
+    const street = faker.location.street().split(' ').reverse().join(' ');
+    const number = faker.number.int({ min: 0, max: 9999 });
+    const district = faker.location.direction();
+    const city = faker.location.city();
+    const complement = faker.location.secondaryAddress();
+
+    return {
+      surname,
+      street,
+      number,
+      district,
+      city,
+      complement,
+    };
+  });
+
+  await prismaClient.address.createMany({
+    data,
+  });
+};
+const seedDatabase = { seedClient, seedClients, seedAddress, seedAddresses };
 const orchestrator = { waitForAllServices, cleanDatabase, seedDatabase };
 export default orchestrator;
